@@ -25,10 +25,10 @@ int main(int argc, char const *argv[]) {
 
 	int i, j; // variaveis de auxilio
 
-	green;
-	cls;
+	//green;
+	//cls;
 
-	puts("São quantos simbolos?");
+	printf("São quantos simbolos: ");
 	scanf("%d", &x.qtdAlfabeto);
 	jmp;
 
@@ -40,15 +40,15 @@ int main(int argc, char const *argv[]) {
 	}
 	jmp;
 
-	puts("São quantos estados?");
+	printf("São quantos estados: ");
 	scanf("%d", &x.qtdEstados);
 	jmp;
 
-	puts("Qual estado inicial?");
+	printf("Qual estado inicial: ");
 	scanf("%d", &x.e0);
 	jmp;
 
-	puts("Quantos estados finais?");
+	printf("Quantos estados finais: ");
 	scanf("%d", &x.qtdEstadoFinal);
 	jmp;
 
@@ -57,14 +57,16 @@ int main(int argc, char const *argv[]) {
 		printf("Defina qual será o Estado Final: ");
 		scanf("%d", &EstadoFinal[i]);
 	}
-
-	cls;
+	jmp;
+//	cls;
 
 	puts("=========================================");
 	puts("||                                     ||");
 	puts("|| Guia de preenchimento               ||");
 	puts("||                                     ||");
 	puts("|| Inserir o número do próximo estado  ||");
+	puts("||                                     ||");
+	puts("||  -1 para não existente              ||");
 	puts("||                                     ||");
 	puts("========================================");
 
@@ -73,7 +75,7 @@ int main(int argc, char const *argv[]) {
 	for (i = 0; i < x.qtdEstados; i++) {
 		for (j = 0; j < x.qtdAlfabeto; j++) {
 			printf(
-					"Para o Estado e%d \nQuando receber simbolo \"%c\"\nDeve ir para qual estado?",
+					"Estado \"e%d\"\nRecebe \"%c\"\nPróximo estado: ",
 					i, Alfabeto[j]);
 			scanf("%d", &tbTransition[i][j]);
 
@@ -107,16 +109,15 @@ int main(int argc, char const *argv[]) {
 	}
 	fprintf(fp, "int main( int argc, char const *argv[]){\n");
 	fprintf(fp, "    char entrada[200];\n");
-	fprintf(fp, "    scanf(\"%s\",entrada);\n");
+	fprintf(fp, "    scanf(\"%%s\",entrada);\n");
 	fprintf(fp, "    e%d();\n", x.e0);
 	fprintf(fp, "    return 0;\n");
 	fprintf(fp, "}\n");
 	for (i = 0; i < x.qtdEstados; i++) {
 		fprintf(fp, "e%d(){\n", i);
-		fprintf(fp, "if(entrada[i]=='\0')\n");
+		fprintf(fp, "if(entrada[i]=='null')\n");
 
 		//inserir a lógica de construção dos blocos
-/*
 
 		 for(j = 0 ; j < x.qtdAlfabeto ; j++){
 			if(tbTransition[i][j] == -1){
@@ -128,9 +129,8 @@ int main(int argc, char const *argv[]) {
 			}
 
 		 }
-*/
 
-		fprintf(fp, "}\n", i);
+		fprintf(fp, "}\n");
 	}
 
 	fclose(fp);
