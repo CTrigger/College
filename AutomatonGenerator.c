@@ -74,9 +74,8 @@ int main(int argc, char const *argv[]) {
 
 	for (i = 0; i < x.qtdEstados; i++) {
 		for (j = 0; j < x.qtdAlfabeto; j++) {
-			printf(
-					"Estado \"e%d\"\nRecebe \"%c\"\nPróximo estado: ",
-					i, Alfabeto[j]);
+			printf("Estado \"e%d\"\nRecebe \"%c\"\nPróximo estado: ", i,
+					Alfabeto[j]);
 			scanf("%d", &tbTransition[i][j]);
 
 		}
@@ -90,7 +89,7 @@ int main(int argc, char const *argv[]) {
 
 	puts("Qual será o nome do Programa?");
 	scanf("%s", programName);
-
+	int equal;
 	char path[200];
 	path[0] = '.';
 	strcat(path, "/");
@@ -107,32 +106,64 @@ int main(int argc, char const *argv[]) {
 	for (i = 0; i < x.qtdEstados; i++) {
 		fprintf(fp, "void e%d();\n", i);
 	}
+	fprintf(fp, "void aceita();\n");
+	fprintf(fp, "void rejeita();\n");
+	fprintf(fp, "char entrada[200];\n");
+	fprintf(fp, "int i = 0;\n\n\n\n");
 	fprintf(fp, "int main( int argc, char const *argv[]){\n");
-	fprintf(fp, "    char entrada[200];\n");
+	fprintf(fp, "\n");
 	fprintf(fp, "    scanf(\"%%s\",entrada);\n");
 	fprintf(fp, "    e%d();\n", x.e0);
 	fprintf(fp, "    return 0;\n");
 	fprintf(fp, "}\n");
+
 	for (i = 0; i < x.qtdEstados; i++) {
+
+		for (j = 0; j < x.qtdEstadoFinal; j++) {
+			if (i == EstadoFinal[j]) {
+				equal = j;
+				break;
+			} else {
+				equal = -1;
+			}
+		}
+
 		fprintf(fp, "e%d(){\n", i);
-		fprintf(fp, "if(entrada[i]=='null')\n");
+		fprintf(fp, "	if(entrada[i]=='null'){\n");
+		if (i == equal) {
+			fprintf(fp, "		aceita();\n");
+		} else {
+			fprintf(fp, "		rejeita();\n");
+		}
+		fprintf(fp, "	}\n");
 
 		//inserir a lógica de construção dos blocos
 
-		 for(j = 0 ; j < x.qtdAlfabeto ; j++){
-			if(tbTransition[i][j] == -1){
-				fprintf(fp, "if(entrada[i]=='%c'){\n",tbTransition[i][j]);
-				fprintf(fp, "rejeita();\n");
-				fprintf(fp, "}\n");
-			}else {
-
+		for (j = 0; j < x.qtdAlfabeto; j++) {
+			if (tbTransition[i][j] == -1) {
+				fprintf(fp, "	if(entrada[i]=='%c'){\n", Alfabeto[j]);
+				fprintf(fp, "		i++;\n");
+				fprintf(fp, "		rejeita();\n");
+				fprintf(fp, "	}\n");
+			} else {
+				fprintf(fp, "	if(entrada[i]=='%c'){\n", Alfabeto[j]);
+				fprintf(fp, "		e%d();\n", tbTransition[i][j]);
+				fprintf(fp, "	}\n");
 			}
 
-		 }
+		}
 
 		fprintf(fp, "}\n");
 	}
+	fprintf(fp, "aceita(){\n");
+	fprintf(fp, "	puts(\"Aceita\");\n");
+	fprintf(fp, "	exit(0);\n");
+	fprintf(fp, "}\n\n");
 
+	fprintf(fp, "rejeita(){\n");
+	fprintf(fp, "	puts(\"Rejeita\");\n");
+	fprintf(fp, "	exit(0);\n");
+	fprintf(fp, "}\n");
 	fclose(fp);
 
 	return 0;
