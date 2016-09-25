@@ -9,24 +9,20 @@ void rejeita();
 char entrada[200];
 int i = 0;
 
-
-
 int main( int argc, char const *argv[]){
 
     scanf("%s",entrada);
     e0();
     return 0;
 }
-e0() {
+void e0() {
 	if(entrada[i] == 'null') {
 		rejeita();
 	}
 	if (entrada[i] == 'a') {
-		i++;
 		rejeita();
 	}
 	if (entrada[i] == 'b') {
-		i++;
 		rejeita();
 	}
 	if (entrada[i] == 'c') {
@@ -34,12 +30,11 @@ e0() {
 		e1();
 	}
 }
-e1() {
+void e1() {
 	if(entrada[i] == 'null') {
 		rejeita();
 	}
 	if (entrada[i] == 'a') {
-		i++;
 		rejeita();
 	}
 	if (entrada[i] == 'b') {
@@ -51,7 +46,7 @@ e1() {
 		e2();
 	}
 }
-e2() {
+void e2() {
 	if(entrada[i] == 'null') {
 		aceita();
 	}
@@ -64,16 +59,15 @@ e2() {
 		e2();
 	}
 	if (entrada[i] == 'c') {
-		i++;
 		rejeita();
 	}
 }
-aceita(){
+void aceita(){
 	puts("Aceita");
 	exit(0);
 }
 
-rejeita(){
+void rejeita(){
 	puts("Rejeita");
 	exit(0);
 }
