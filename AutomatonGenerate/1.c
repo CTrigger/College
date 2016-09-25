@@ -18,6 +18,7 @@ typedef struct {
 int main(int argc, char const *argv[]) {
 
 	setlocale(LC_ALL, "Portuguese");
+	freopen("../In/in.txt","r",stdin);
 
 	AFD_M x;
 	int bType;
@@ -28,7 +29,7 @@ int main(int argc, char const *argv[]) {
 	//green;
 	//cls;
 
-	printf("SÃ£o quantos simbolos: ");
+	printf("São quantos simbolos: ");
 	scanf("%d", &x.qtdAlfabeto);
 	jmp;
 
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[]) {
 	}
 	jmp;
 
-	printf("SÃ£o quantos estados: ");
+	printf("São quantos estados: ");
 	scanf("%d", &x.qtdEstados);
 	jmp;
 
@@ -54,7 +55,7 @@ int main(int argc, char const *argv[]) {
 
 	int EstadoFinal[x.qtdEstadoFinal];
 	for (i = 0; i < x.qtdEstadoFinal; i++) {
-		printf("Defina qual serÃ¡ o Estado Final: ");
+		printf("Defina qual será o Estado Final: ");
 		scanf("%d", &EstadoFinal[i]);
 	}
 	jmp;
@@ -64,30 +65,30 @@ int main(int argc, char const *argv[]) {
 	puts("||                                     ||");
 	puts("|| Guia de preenchimento               ||");
 	puts("||                                     ||");
-	puts("|| Inserir o nÃºmero do prÃ³ximo estado  ||");
+	puts("|| Inserir o número do próximo estado  ||");
 	puts("||                                     ||");
-	puts("||  -1 para nÃ£o existente              ||");
+	puts("||  -1 para não existente              ||");
 	puts("||                                     ||");
 	puts("========================================");
 
 	int tbTransition[x.qtdEstados][x.qtdAlfabeto];
 
-	for (i = 0; i < x.qtdEstados; i++) {
+	for (i = 0; i < x.qtdEstados; i++,jmp) {
 		for (j = 0; j < x.qtdAlfabeto; j++) {
-			printf("Estado \"e%d\"\nRecebe \"%c\"\nPrÃ³ximo estado: ", i,
+			printf("Estado \"e%d\"\nRecebe \"%c\"\nPróximo estado: ", i,
 					Alfabeto[j]);
 			scanf("%d", &tbTransition[i][j]);
 
 		}
 	}
 
-	puts("Escolha o tipo de cÃ³digo:");
-	puts("1 - blocos de \"funÃ§Ã£o\"");
+	puts("Escolha o tipo de código:");
+	puts("1 - blocos de \"função\"");
 	puts("2 - saltos por \"goto\"");
 	scanf("%d", &bType);
 	jmp;
 
-	puts("Qual serÃ¡ o nome do Programa?");
+	puts("Qual será o nome do Programa?");
 	scanf("%s", programName);
 	int equal;
 	char path[200];
@@ -98,7 +99,7 @@ int main(int argc, char const *argv[]) {
 	//===================================================
 	FILE *fp;
 //	fp = fopen(path,"wt");
-	fp = fopen("trab.c", "wt");
+	fp = fopen("../OutputGenerated/GeradoTeste.c", "wt");
 
 	fprintf(fp, "#include<stdio.h>\n");
 	fprintf(fp, "#include<stdlib.h>\n");
@@ -128,25 +129,27 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 
-		fprintf(fp, "e%d(){\n", i);
-		fprintf(fp, "	if(entrada[i]=='null'){\n");
-		if (i == equal) {
+
+		fprintf(fp, "e%d() {\n", i);
+		fprintf(fp, "	if(entrada[i] == 'null') {\n");
+		if (i == EstadoFinal[equal]) {
 			fprintf(fp, "		aceita();\n");
 		} else {
 			fprintf(fp, "		rejeita();\n");
 		}
 		fprintf(fp, "	}\n");
 
-		//inserir a lÃ³gica de construÃ§Ã£o dos blocos
+		//inserir a lógica de construção dos blocos
 
 		for (j = 0; j < x.qtdAlfabeto; j++) {
 			if (tbTransition[i][j] == -1) {
-				fprintf(fp, "	if(entrada[i]=='%c'){\n", Alfabeto[j]);
+				fprintf(fp, "	if (entrada[i] == '%c') {\n", Alfabeto[j]);
 				fprintf(fp, "		i++;\n");
 				fprintf(fp, "		rejeita();\n");
 				fprintf(fp, "	}\n");
 			} else {
-				fprintf(fp, "	if(entrada[i]=='%c'){\n", Alfabeto[j]);
+				fprintf(fp, "	if (entrada[i] == '%c') {\n", Alfabeto[j]);
+				fprintf(fp, "		i++;\n");
 				fprintf(fp, "		e%d();\n", tbTransition[i][j]);
 				fprintf(fp, "	}\n");
 			}
