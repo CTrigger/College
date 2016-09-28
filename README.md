@@ -1,6 +1,6 @@
 # College
 some college jobs<br />
-not plagiarize<br />
+don't plagiarize<br />
 I'm student at São Judas Tadeu (Brazil, São Paulo)<br />
 Teory of computation job <br />
 <fieldset>
