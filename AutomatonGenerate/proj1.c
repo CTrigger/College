@@ -37,7 +37,7 @@ typedef struct {
 
 int main(int argc, char **argv) {
 
-	freopen(input,"r",stdin);
+	//freopen(input,"r",stdin);
 	setlocale(LC_ALL, "Portuguese");
 
 	AFD_M x;
