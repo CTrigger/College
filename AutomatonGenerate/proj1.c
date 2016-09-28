@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 	int i, j;
 
 	//inicio da interface de escolhas
-	printf("São quantos simbolos: ");
+	printf("SÃ£o quantos simbolos: ");
 	scanf("%d", &x.qtdAlfabeto);
 	jmp;
 
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 	}
 	jmp;
 
-	printf("São quantos estados: ");
+	printf("SÃ£o quantos estados: ");
 	scanf("%d", &x.qtdEstados);
 	jmp;
 
@@ -67,14 +67,14 @@ int main(int argc, char **argv) {
 	jmp;
 
 	for (i = 0; i < x.qtdEstadoFinal; i++) {
-		printf("Defina qual será o Estado Final: ");
+		printf("Defina qual serÃ¡ o Estado Final: ");
 		scanf("%d", &x.EstadoFinal[i]);
 	}
 	jmp;
 
 	for (i = 0; i < x.qtdEstados; i++, jmp) {
 		for (j = 0; j < x.qtdAlfabeto; j++) {
-			printf("Estado \"e%d\"\nRecebe \"%c\"\nPróximo estado: ", i,
+			printf("Estado \"e%d\"\nRecebe \"%c\"\nPrÃ³ximo estado: ", i,
 					x.Alfabeto[j]);
 			scanf("%d", &x.tbTransition[i][j]);
 
@@ -82,13 +82,13 @@ int main(int argc, char **argv) {
 	}
 	jmp;
 
-	puts("Escolha o tipo de código:");
-	puts("1 - blocos de \"função\"");
+	puts("Escolha o tipo de cÃ³digo:");
+	puts("1 - blocos de \"funÃ§Ã£o\"");
 	puts("2 - saltos por \"goto\"");
 	scanf("%d", &x.bType);
 	jmp;
 
-	puts("Qual será o nome do Programa?");
+	puts("Qual serÃ¡ o nome do Programa?");
 	scanf("%s", x.programName);
 	jmp;
 
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
 		fclose(fp);
 	}
 
-	//Fim da geração
+	//Fim da geraÃ§Ã£o
 
 	system("pause");
 	return 0;
@@ -125,7 +125,7 @@ void cmFunc(AFD_M bdFunc) {
 	fprintf(fp, "#include<stdlib.h>\n");
 	fprintf(fp, "#include<string.h>\n");
 
-	//reservas de endereço
+	//reservas de endereÃ§o
 	for (i = 0; i < bdFunc.qtdEstados; i++) {
 		fprintf(fp, "void e%d();\n", i);
 	}
@@ -147,7 +147,7 @@ void cmFunc(AFD_M bdFunc) {
 	//gera todos os estados definidos
 	for (i = 0; i < bdFunc.qtdEstados; i++) {
 
-		//busca estados finais possíveis
+		//busca estados finais possÃ­veis
 		for (j = 0; j < bdFunc.qtdEstadoFinal; j++) {
 			if (i == bdFunc.EstadoFinal[j]) {
 				equal = j;
@@ -159,7 +159,7 @@ void cmFunc(AFD_M bdFunc) {
 
 		//cria bloco
 		fprintf(fp, "void e%d() {\n", i);
-		fprintf(fp, "	if(entrada[i] == 'null') {\n");
+		fprintf(fp, "	if(entrada[i] == '\\0') {\n");
 		if (i == bdFunc.EstadoFinal[equal] && equal != -1) {
 			fprintf(fp, "		aceita();\n");
 		} else {
@@ -167,7 +167,7 @@ void cmFunc(AFD_M bdFunc) {
 		}
 		fprintf(fp, "	}\n");
 
-		//inserir a lógica de construção dos blocos
+		//inserir a lÃ³gica de construÃ§Ã£o dos blocos
 		for (j = 0; j < bdFunc.qtdAlfabeto; j++) {
 			if (bdFunc.tbTransition[i][j] == -1) {
 				fprintf(fp, "	if (entrada[i] == '%c') {\n", bdFunc.Alfabeto[j]);
@@ -217,7 +217,7 @@ void cmGoto(AFD_M bdGoto) {
 	fprintf(fp, "    goto e%d;\n\n", bdGoto.e0);
 
 
-		//lógica GOTO
+		//lÃ³gica GOTO
 		for (i = 0; i < bdGoto.qtdEstados; i++) {
 
 			//busca estados validos
@@ -234,7 +234,7 @@ void cmGoto(AFD_M bdGoto) {
 			fprintf(fp, "	e%d: \n", i);
 
 			//goto Estado Ending?
-			fprintf(fp, "		if(entrada[i] == 'null') {\n");
+			fprintf(fp, "		if(entrada[i] == '\\0') {\n");
 			if (i == bdGoto.EstadoFinal[equal] && equal != -1) {
 				fprintf(fp, "			goto aceita;\n");
 			} else {
