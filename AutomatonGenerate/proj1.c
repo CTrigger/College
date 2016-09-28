@@ -3,21 +3,30 @@
 #include<stdlib.h>
 #include<string.h>
 
+//Macros setup, all system commands works only in windows
 #define jmp puts("")
 #define cls system("cls")
 #define green system("color A")
 #define max 100
 
-#define input "../In/in.txt"
+
+//i used this to generate fastest the files.c
 /*
+#define input "../In/in.txt"
 #define input "in.txt"
 */
 
-void cmGoto();
-void cmFunc();
 
+//memory reserved
+void cmGoto(); //command Goto
+void cmFunc(); //command Function
+
+
+//i decided use the File struct as global variable
 FILE *fp;
 
+
+//made this to make less work using the "intellisense" in Eclipse
 typedef struct {
 	int qtdAlfabeto;
 	int qtdEstados;
@@ -35,43 +44,54 @@ typedef struct {
 
 } AFD_M;
 
-int main(int argc, char **argv) {
 
+
+int main(int argc, char **argv) {
+	//used this only to void my inputs
 	//freopen(input,"r",stdin);
+
+	//setup to portuguese program
 	setlocale(LC_ALL, "Portuguese");
 
 	AFD_M x;
-	int i, j;
+	int i, j; //support variable
 
-	//inicio da interface de escolhas
+	//=======here we start the interactions with the users======
+	//symbols setup
 	printf("São quantos simbolos: ");
 	scanf("%d", &x.qtdAlfabeto);
 	jmp;
 
+	//declare whats symbols exists
 	for (i = 0; i < x.qtdAlfabeto; i++) {
 		printf("Simbolo %d: ", i);
 		scanf(" %c", &x.Alfabeto[i]);
 	}
 	jmp;
 
+	//numbers states define
 	printf("São quantos estados: ");
 	scanf("%d", &x.qtdEstados);
 	jmp;
 
+	//what is the initial state?
 	printf("Qual estado inicial: ");
 	scanf("%d", &x.e0);
 	jmp;
 
+	//how much final states we have?
 	printf("Quantos estados finais: ");
 	scanf("%d", &x.qtdEstadoFinal);
 	jmp;
 
+	//define the final states
 	for (i = 0; i < x.qtdEstadoFinal; i++) {
 		printf("Defina qual será o Estado Final: ");
 		scanf("%d", &x.EstadoFinal[i]);
 	}
 	jmp;
 
+	//transistion table setup
 	for (i = 0; i < x.qtdEstados; i++, jmp) {
 		for (j = 0; j < x.qtdAlfabeto; j++) {
 			printf("Estado \"e%d\"\nRecebe \"%c\"\nPróximo estado: ", i,
@@ -82,36 +102,50 @@ int main(int argc, char **argv) {
 	}
 	jmp;
 
+	//choose what kind command want?
+	//1-command function
+	//2-command goto
 	puts("Escolha o tipo de código:");
 	puts("1 - blocos de \"função\"");
 	puts("2 - saltos por \"goto\"");
 	scanf("%d", &x.bType);
 	jmp;
 
+	//this will clean the scanf garbage
+	//CrLf
+	char dummie;
+	while((dummie= getchar()) != '\n' && dummie != EOF);
+
+	//choose the program name
 	puts("Qual será o nome do Programa?");
-	scanf("%s", x.programName);
+	//scanf("%s", x.programName);
+	gets(x.programName);
 	jmp;
 
-	// Fim da interface de entrada.
-	char *filename;//[sizeof "file100.txt"];
+	//=======user interaction ending.===========
+
+	//============================================
+	//this will prepare custom name for the program
+	char *filename;
 	filename = (char*) malloc(60*sizeof(char));
 	sprintf(filename, "./%s.c",x.programName);
 
-	//Gerar Arquivos
 	fp = fopen(filename, "wt");
+	//============================================
 
+
+	//option select
 	if (x.bType == 1) {
 		cmFunc(x);
 		fclose(fp);
 	}
 	if (x.bType == 2) {
-		//fp = fopen(output, "wt");
 		cmGoto(x);
 		fclose(fp);
 	}
 
-	//Fim da geração
-
+	puts("Arquivo Gerado!");
+	printf("Gerado em \"%s\"\n",filename);
 	system("pause");
 	return 0;
 }
