@@ -37,9 +37,9 @@ void e0() {
 			//step 7
 			printf("%c", In);
 			e3();
-		} else if(In == '%%'){
-			//????
-		}else{
+		} else if (In == '%') {
+			e5();
+		} else {
 			e6();
 		}
 
@@ -93,10 +93,21 @@ void e4() {
 }
 
 void e5() {
+	scanf("%c ", &In);
+	if (In == '\\') {
+		scanf("%c ", &In);
+		if (In == 'n') {
+			puts ("");
+		}
+		if (In == '0'){
+			puts ("Fim");
+		}
 
+	}
+	e0();
 }
 
 void e6() {
-	printf("C(%c)",In);
+	printf("C(%c)", In);
 	e0();
 }
