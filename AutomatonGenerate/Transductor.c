@@ -1,7 +1,8 @@
 /*
  * 	Author: Ricardo Kim
  * 	Year Date: 2017
- *  Details: college homework transductor  
+ *  	Details: college homework transductor 
+ *	Teacher: Pier Richetti
  * */
 
 #include<stdio.h>
