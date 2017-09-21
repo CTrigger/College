@@ -25,7 +25,7 @@ char palavrasReservadas [][10] = {
 		"if",
 		"let",
 		"then",
-		"printf",
+		"print",
 		"of",
 		"else",
 		"goto",
